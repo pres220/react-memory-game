@@ -57,8 +57,6 @@ function App() {
     }
   }, [state.matchedCards, state.cards]);
 
-  console.log(state);
-
   return (
     <div className="container">
       <header>

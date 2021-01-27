@@ -95,6 +95,7 @@ body {
   transform: translate(-50%, -50%);
   background-color: whitesmoke;
   padding: 10px;
+  border: 4px solid black;
 }
 
 @media screen and (max-width:359px) {

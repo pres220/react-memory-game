@@ -28,17 +28,6 @@ function shuffleCardList(cardList) {
   return cardList;
 }
 
-const initialState = {
-  firstCard: { id: undefined, name: "" },
-  secondCard: { id: undefined, name: "" },
-  cards: shuffleCardList(cardList),
-  matchedCards: [],
-  mismatchedCards: [],
-  flippedCards: [],
-  isModalOpen: false,
-  isLocked: false
-};
-
 function reducer(state, action) {
   switch(action.type) {
     case "SET_FIRST_CARD":
@@ -56,7 +45,7 @@ function reducer(state, action) {
     case "SET_BOARD_LOCK":
       return {
         ...state,
-        isLocked: action.isLocked
+        isBoardLocked: action.isBoardLocked
       }
     case "SET_MATCHES":
       return {
@@ -85,16 +74,16 @@ function reducer(state, action) {
       return {
         firstCard: { id: undefined, name: "" },
         secondCard: { id: undefined, name: "" },
-        cards: shuffleCardList(cardList),
+        cards: [...shuffleCardList(cardList)],
         matchedCards: [],
         mismatchedCards: [],
         flippedCards: [],
         isModalOpen: false,
-        isLocked: false
+        isBoardLocked: false
       }
     default:
       return state
   }
 }
 
-export { initialState, reducer };
+export { reducer, cardList, shuffleCardList };

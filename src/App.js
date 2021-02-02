@@ -4,18 +4,28 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "react-modal";
 import Card from "./Card";
-import { initialState, reducer } from "./reducer";
+import { reducer, cardList, shuffleCardList } from "./reducer";
 
 library.add(fas);
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, {
+      firstCard: { id: undefined, name: "" },
+      secondCard: { id: undefined, name: "" },
+      cards: [...shuffleCardList(cardList)],
+      matchedCards: [],
+      mismatchedCards: [],
+      flippedCards: [],
+      isModalOpen: false,
+      isBoardLocked: false
+    }
+  );
 
   function handleCardClick(id, name) {
     const isMatched = state.matchedCards.find(matched => matched.id === id);
     const isMismatched = state.mismatchedCards.find(mismatched => mismatched.id === id);
 
-    if (state.isLocked || id === state.firstCard.id || id === state.secondCard.id || isMatched || isMismatched) {
+    if (state.isBoardLocked || id === state.firstCard.id || id === state.secondCard.id || isMatched || isMismatched) {
       return;
     }
 
@@ -35,14 +45,14 @@ function App() {
       return;
     }
 
-    dispatch({ type: "SET_BOARD_LOCK", isLocked: true });
+    dispatch({ type: "SET_BOARD_LOCK", isBoardLocked: true });
 
     if (state.firstCard.name === state.secondCard.name) {
       dispatch({ type: "SET_MATCHES" });
-      dispatch({ type: "SET_BOARD_LOCK", isLocked: false })
+      dispatch({ type: "SET_BOARD_LOCK", isBoardLocked: false })
     } else {
       dispatch({ type: "SET_MISMATCHES" })
-      dispatch({ type: "SET_BOARD_LOCK", isLocked: false })
+      dispatch({ type: "SET_BOARD_LOCK", isBoardLocked: false })
     }
 
     dispatch({ type: "SET_FIRST_CARD", firstCard: { id: undefined, name: "" } })
@@ -57,6 +67,7 @@ function App() {
     }
   }, [state.matchedCards, state.cards]);
 
+  console.log(state);
   return (
     <div className="container">
       <header>
